@@ -7,5 +7,6 @@ public class Main {
     var firstBoxOrange = new Box<>(new Orange(1.5f), new Orange(1.5f));
     var secondBoxOrange = new Box<>(new Orange(1.5f), new Orange(1.5f), new Orange(1.5f));
     System.out.println(firstBoxApple);
+    System.out.println(secondBoxOrange);
   }
 }

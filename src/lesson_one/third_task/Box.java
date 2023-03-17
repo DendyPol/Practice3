@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Box<T extends Fruit> {
-  private ArrayList<T> fruits = new ArrayList<>();
+  private final ArrayList<T> fruits;
+
+  @Override
+  public String toString() {
+    return "Коробка фруктов{" +
+            "\nКоличество фруктов=" + fruits + "\nОбщий вес фруктов=" + getWeight() +
+            '}';
+  }
 
   public Box(T... fruit) {
     this.fruits = new ArrayList<T>(Arrays.asList(fruit));
@@ -31,14 +38,5 @@ public class Box<T extends Fruit> {
       box.add(fruit);
     }
     fruits.clear();
-  }
-
-  public String toString() {
-    return "Сведения: \n" +
-            "1.Вес коробки='" + getWeight() + '\'' +
-            "\n2.Сравнение веса текущей коробки с другой='" + compare(new Box<>()) + '\'' +
-            "\nПример: System.out.println(firstBoxApple.compare(firstBoxOrange))" +
-            "\n3.Метод <transfer> переносит фрукты определенного типа из текущей коробки в другую коробку='" +
-            "\nПример: firstBoxOrange.transfer(secondBoxOrange);";
   }
 }
