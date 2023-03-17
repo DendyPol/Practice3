@@ -5,15 +5,17 @@ import java.util.Arrays;
 
 public class Box<T extends Fruit> {
   private final ArrayList<T> fruits;
+  private final float weight;
 
   @Override
   public String toString() {
     return "Коробка фруктов{" +
-            "\nКоличество фруктов=" + fruits + "\nОбщий вес фруктов=" + getWeight() +
+            "\nКоличество фруктов=" + fruits + "\nВес одного фрукта=" + weight +
             '}';
   }
 
-  public Box(T... fruit) {
+  public Box(float weight, T... fruit) {
+    this.weight = weight;
     this.fruits = new ArrayList<T>(Arrays.asList(fruit));
   }
 
@@ -22,11 +24,11 @@ public class Box<T extends Fruit> {
   }
 
   public float getWeight() {
-    float weight = 0.0f;
+    float totalWeight = this.weight;
     for (T fruit : fruits) {
-      weight += fruit.getWeight();
+      totalWeight += fruit.getWeight();
     }
-    return weight;
+    return totalWeight;
   }
 
   public boolean compare(Box<?> box) {
