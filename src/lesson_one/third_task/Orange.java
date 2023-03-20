@@ -6,7 +6,7 @@ import lombok.ToString;
 public class Orange extends Fruit {
   private final String name = "Армянский Апельсин";
 
-  public Orange() {
-    super(4.3f);
+  public Orange(float weight) {
+    super(weight);
   }
 }

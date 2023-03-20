@@ -20,7 +20,7 @@ public class Box<T extends Fruit> {
 
   public void add(T fruit) {
     fruits.add(fruit);
-    weight += fruit.totalWeight();
+    weight += fruit.getWeight();
   }
 
   public void transfer(Box<T> box) {
