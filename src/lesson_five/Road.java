@@ -23,6 +23,6 @@ public class Road extends Stage {
   }
 
   private long timeStage(Car c) {
-    return length / c.getSpeed() * longTimeMilli;
+    return (long) (length / c.getSpeed() * LONG_TIME_MILLI);
   }
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 public abstract class Stage {
   protected int length;
   protected String description;
-  protected final long longTimeMilli = 1000L;
+  protected static final int LONG_TIME_MILLI = 1000;
 
   public abstract void go(Car c);
 }

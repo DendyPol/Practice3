@@ -10,13 +10,15 @@ import java.util.logging.Level;
 @Getter
 @Log
 public class Car implements Runnable {
+  private static final int INITIAL_DELAY = 500;
+  private static final int MAX_DELAY = 800;
   private static int CARS_COUNT = 4;
   private final Race race;
-  private final int speed;
+  private final Double speed;
   private final String name;
   private final CyclicBarrier barrier;
 
-  public Car(Race race, int speed, CyclicBarrier barrier) {
+  public Car(Race race, Double speed, CyclicBarrier barrier) {
     this.race = race;
     this.speed = speed;
     CARS_COUNT++;
@@ -28,7 +30,7 @@ public class Car implements Runnable {
   public void run() {
     try {
       System.out.printf("%s готовится\n", this.name);
-      Thread.sleep(500 + randomSleep());
+      Thread.sleep((long) (INITIAL_DELAY + randomSleep()));
       System.out.printf("%s готов\n", this.name);
       barrier.await();
       barrier.await();
@@ -47,7 +49,7 @@ public class Car implements Runnable {
     }
   }
 
-  private int randomSleep() {
-    return (int) (Math.random() * 800);
+  private Double randomSleep() {
+    return Math.random() * MAX_DELAY;
   }
 }

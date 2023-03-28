@@ -5,9 +5,11 @@ import lombok.extern.java.Log;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 
+import static lesson_five.MainClass.MAX_ENTRY_TUNNEL;
+
 @Log
 public class Tunnel extends Stage {
-  Semaphore checkPoint = new Semaphore(2);
+  Semaphore checkPoint = new Semaphore(MAX_ENTRY_TUNNEL);
 
   public Tunnel() {
     this.length = 80;
@@ -34,6 +36,6 @@ public class Tunnel extends Stage {
   }
 
   private long timeStage(Car c) {
-    return length / c.getSpeed() * longTimeMilli;
+    return (long) (length / c.getSpeed() * LONG_TIME_MILLI);
   }
 }
