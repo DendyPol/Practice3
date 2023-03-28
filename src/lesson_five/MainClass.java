@@ -2,6 +2,8 @@ package lesson_five;
 
 import lombok.extern.java.Log;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.logging.Level;
@@ -13,7 +15,7 @@ public class MainClass {
   public static void main(String[] args) {
     System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
     var MyBarrier = new CyclicBarrier(CARS_COUNT + 1);
-    var race = new Race(new Road(60), new Tunnel(), new Road(40));
+    var race = new Race(new ArrayList<>(List.of(new Road(60), new Tunnel(), new Road(40))));
     var cars = new Car[CARS_COUNT];
     for (int i = 0; i < cars.length; i++) {
       cars[i] = new Car(race, randomSpeed(), MyBarrier);

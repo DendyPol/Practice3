@@ -34,6 +34,6 @@ public class Tunnel extends Stage {
   }
 
   private long timeStage(Car c) {
-    return length / c.getSpeed() * 1000L;
+    return length / c.getSpeed() * longTimeMilli;
   }
 }
