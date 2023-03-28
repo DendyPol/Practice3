@@ -3,7 +3,6 @@ package lesson_five;
 import lombok.Getter;
 import lombok.extern.java.Log;
 
-import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.logging.Level;
@@ -29,7 +28,7 @@ public class Car implements Runnable {
   public void run() {
     try {
       System.out.printf("%s готовится\n", this.name);
-      Thread.sleep(500 + (int) (Math.random() * 800));
+      Thread.sleep(500 + randomSleep());
       System.out.printf("%s готов\n", this.name);
       barrier.await();
       barrier.await();
@@ -41,8 +40,14 @@ public class Car implements Runnable {
       if (winner == 0)
         System.out.printf("%s - Победитель!\n", this.name);
       barrier.await();
-    } catch (InterruptedException | BrokenBarrierException e) {
-      log.log(Level.WARNING, "Ошибка чтения потока" + e.getMessage() + Arrays.toString(e.getStackTrace()));
+    } catch (InterruptedException e) {
+      log.log(Level.WARNING, "Ошибка чтения потока" + e.getMessage() + e.getStackTrace());
+    } catch (BrokenBarrierException e) {
+      log.log(Level.SEVERE, "Ошибка барьера" + e.getMessage() + e.getStackTrace());
     }
+  }
+
+  private int randomSleep() {
+    return (int) (Math.random() * 800);
   }
 }
