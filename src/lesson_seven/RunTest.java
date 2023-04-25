@@ -21,40 +21,25 @@ public class RunTest {
     for (Method method : methods) {
       if (method.isAnnotationPresent(BeforeSuite.class)) {
         var priority = method.getAnnotation(BeforeSuite.class).priority();
-        if (priority != Test.MIN_PRIORITY) {
-          throw new RuntimeException("Метод с аннотацией BeforeSuite, должен иметь приоритет 1!");
-        }
-        if (beforeAnnotationCount > controlAnnotation) {
-          throw new RuntimeException("Метод с аннотацией @BeforeSuite, должен быть в единственном эксземпляре!");
-        }
+        checkNullAndPriority(priority, BeforeSuite.class, Test.MIN_PRIORITY);
         priorityCheck.put(priority, method);
         beforeAnnotationCount++;
       }
       if (method.isAnnotationPresent(AfterSuite.class)) {
         var priority = method.getAnnotation(AfterSuite.class).priority();
-        if (priority != Test.MAX_PRIORITY) {
-          throw new RuntimeException("Метод с аннотацией AfterSuite должен иметь приоритет 10!");
-        }
-        if (afterAnnotationCount > controlAnnotation) {
-          throw new RuntimeException("Метод с аннотацией @AfterSuite, должен быть в единственном экземпляре!");
-        }
+        checkNullAndPriority(priority, AfterSuite.class, Test.MAX_PRIORITY);
         priorityCheck.put(priority, method);
         afterAnnotationCount++;
       }
-      Test testAnnotation = method.getAnnotation(Test.class);
+      var testAnnotation = method.getAnnotation(Test.class);
       if (testAnnotation != null) {
         var priority = testAnnotation.priority();
-        if (priority < Test.MIN_PRIORITY || priority > Test.MAX_PRIORITY) {
-          throw new RuntimeException("Приоритет метода должен составлять от 1 до 10");
-        }
+        checkNullAndPriority(priority, Test.class, priority);
         priorityCheck.put(priority, method);
       }
     }
-    if (beforeAnnotationCount == controlAnnotation) {
-      throw new RuntimeException("Метод с аннотацией @BeforeSuite, должен быть определен!");
-    }
-    if (afterAnnotationCount == controlAnnotation) {
-      throw new RuntimeException("Метод с аннотацией @AfterSuite, должен быть определен!");
+    if (beforeAnnotationCount == controlAnnotation || afterAnnotationCount == controlAnnotation) {
+      throw new RuntimeException("Метод с аннотацией @BeforeSuite или @AfterSuite должен быть определен!");
     }
     priorityCheck.values().forEach(method -> {
       try {
@@ -67,16 +52,27 @@ public class RunTest {
         log.log(Level.WARNING, "Ошибка! Класс не имеет конструктора без параметров!", e.getMessage());
       } catch (NoSuchMethodException e) {
         log.log(Level.WARNING, "Ошибка! Невозможно вызвать несущестсвующий метод!", e.getMessage());
-        e.printStackTrace();
       }
     });
+  }
+
+  private static void checkNullAndPriority(Integer priority, Class<?> annotationClass, int expectedPriority) {
+    if (priority == null) {
+      throw new RuntimeException(annotationClass.getSimpleName() + " должна быть определена в тестовом классе!");
+    }
+    if (priority != expectedPriority) {
+      throw new RuntimeException(annotationClass.getSimpleName() + " должна иметь приоритет " + expectedPriority + "!");
+    }
+    if (annotationClass.equals(Test.class) && (priority < Test.MIN_PRIORITY || priority > Test.MAX_PRIORITY)) {
+      throw new RuntimeException("Приоритет метода должен быть от " + Test.MIN_PRIORITY + " до " + Test.MAX_PRIORITY);
+    }
   }
 
   public static void main(String[] args) {
     try {
       RunTest.start(TestClass.class);
     } catch (RuntimeException e) {
-      e.printStackTrace();
+      log.log(Level.WARNING, "Ошибка при проверке тестов!", e.getMessage());
     }
   }
 }
